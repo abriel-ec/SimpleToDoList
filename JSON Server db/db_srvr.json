@@ -1,0 +1,25 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Tarea ejemplo",
+      "description": "Descripción inicial"
+    },
+    {
+      "description": "Hola mundo!!!!",
+      "title": "Nueva tarea creada",
+      "id": "_jWm5fxJndg"
+    },
+    {
+      "description": "T2",
+      "title": "Tarea 2",
+      "id": "TFBrljdDzBk"
+    },
+    {
+      "description": "T3",
+      "title": "Tarea 3",
+      "id": "4L6Fcj7Lj78"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
