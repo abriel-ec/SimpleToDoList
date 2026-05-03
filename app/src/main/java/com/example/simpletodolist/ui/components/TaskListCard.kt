@@ -17,15 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.simpletodolist.R
-import com.example.simpletodolist.data.model.Notebook
+import com.example.simpletodolist.data.model.TaskList
 
 /*
- * Componente reutilizable que representa una lista como tarjeta
+ * Componente reutilizable que representa una lista de tareas como tarjeta
  * al estilo Microsoft To Do con color distintivo.
  */
 @Composable
-fun NotebookCard(
-    notebook: Notebook,
+fun TaskListCard(
+    taskList: TaskList,
     onClick: () -> Unit,
     onRename: () -> Unit,
     onDelete: () -> Unit,
@@ -34,7 +34,7 @@ fun NotebookCard(
     var menuExpanded by remember { mutableStateOf(false) }
 
     val cardColor = runCatching {
-        Color(android.graphics.Color.parseColor(notebook.color ?: "#6650A4"))
+        Color(android.graphics.Color.parseColor(taskList.color ?: "#6650A4"))
     }.getOrDefault(MaterialTheme.colorScheme.primary)
 
     Card(
@@ -71,7 +71,7 @@ fun NotebookCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = notebook.title,
+                    text = taskList.title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )

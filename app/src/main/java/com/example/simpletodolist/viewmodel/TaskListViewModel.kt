@@ -4,81 +4,78 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.simpletodolist.data.local.SessionManager
-import com.example.simpletodolist.data.model.Notebook
-import com.example.simpletodolist.data.repository.NotebookRepository
+import com.example.simpletodolist.data.model.TaskList
+import com.example.simpletodolist.data.repository.TaskListRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /*
- * ViewModel encargado de la lista de cuadernos del usuario autenticado.
+ * ViewModel encargado de las listas de tareas del usuario autenticado.
  *
  * Lee del SessionManager el id del usuario activo y solicita al
- * NotebookRepository únicamente sus cuadernos (filtrado por userId),
- * de modo que cada usuario nunca ve los del resto.
+ * TaskListRepository únicamente sus listas (filtrado por userId),
+ * de modo que cada usuario nunca ve las del resto.
  *
  * Expone un StateFlow con todo lo que la UI necesita: lista de
- * cuadernos, estado de carga y posibles mensajes de error.
- *
- * Las operaciones de creación, renombrado y borrado refrescan la lista
- * tras finalizar para mantener la UI sincronizada con el servidor.
+ * listas, estado de carga y posibles mensajes de error.
  */
-class NotebookViewModel(application: Application) : AndroidViewModel(application) {
+class TaskListViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = NotebookRepository()
+    private val repository = TaskListRepository()
     private val sessionManager = SessionManager(application)
 
-    private val _uiState = MutableStateFlow(NotebookUiState())
-    val uiState: StateFlow<NotebookUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(TaskListUiState())
+    val uiState: StateFlow<TaskListUiState> = _uiState.asStateFlow()
 
     init {
-        loadNotebooks()
+        loadTaskLists()
     }
 
-    fun loadNotebooks() {
+    fun loadTaskLists() {
         val userId = sessionManager.getUserId() ?: return
 
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
 
-            repository.getNotebooks(userId)
-                .onSuccess { notebooks ->
+            repository.getTaskLists(userId)
+                .onSuccess { taskLists ->
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        notebooks = notebooks
+                        taskLists = taskLists
                     )
                 }
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        errorMessage = e.message ?: "Error al cargar cuadernos"
+                        errorMessage = e.message ?: "Error al cargar listas"
                     )
                 }
         }
     }
 
-    fun createNotebook(title: String) {
+    fun createTaskList(title: String) {
         val userId = sessionManager.getUserId() ?: return
         if (title.isBlank()) return
 
         viewModelScope.launch {
-            repository.createNotebook(userId, title.trim())
-                .onSuccess { loadNotebooks() }
+            repository.createTaskList(userId, title.trim())
+                .onSuccess { loadTaskLists() }
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(
-                        errorMessage = e.message ?: "Error al crear cuaderno"
+                        errorMessage = e.message ?: "Error al crear lista"
                     )
                 }
         }
     }
 
-    fun renameNotebook(id: String, newTitle: String) {
+    fun renameTaskList(id: String, newTitle: String) {
         if (newTitle.isBlank()) return
 
         viewModelScope.launch {
-            repository.renameNotebook(id, newTitle.trim())
-                .onSuccess { loadNotebooks() }
+            repository.renameTaskList(id, newTitle.trim())
+                .onSuccess { loadTaskLists() }
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(
                         errorMessage = e.message ?: "Error al renombrar"
@@ -87,10 +84,10 @@ class NotebookViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun deleteNotebook(id: String) {
+    fun deleteTaskList(id: String) {
         viewModelScope.launch {
-            repository.deleteNotebook(id)
-                .onSuccess { loadNotebooks() }
+            repository.deleteTaskList(id)
+                .onSuccess { loadTaskLists() }
                 .onFailure { e ->
                     _uiState.value = _uiState.value.copy(
                         errorMessage = e.message ?: "Error al eliminar"
@@ -105,10 +102,10 @@ class NotebookViewModel(application: Application) : AndroidViewModel(application
 }
 
 /*
- * Estado inmutable que la pantalla de cuadernos observa.
+ * Estado inmutable que HomeScreen observa.
  */
-data class NotebookUiState(
-    val notebooks: List<Notebook> = emptyList(),
+data class TaskListUiState(
+    val taskLists: List<TaskList> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 )

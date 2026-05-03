@@ -1,32 +1,12 @@
 package com.example.simpletodolist.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,42 +16,34 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.simpletodolist.R
 import com.example.simpletodolist.data.local.SessionManager
-import com.example.simpletodolist.data.model.Notebook
+import com.example.simpletodolist.data.model.TaskList
 import com.example.simpletodolist.ui.components.AppTextField
-import com.example.simpletodolist.ui.components.NotebookCard
 import com.example.simpletodolist.ui.components.PrimaryButton
+import com.example.simpletodolist.ui.components.TaskListCard
 import com.example.simpletodolist.viewmodel.AuthViewModel
-import com.example.simpletodolist.viewmodel.NotebookViewModel
+import com.example.simpletodolist.viewmodel.TaskListViewModel
 
 /*
  * Pantalla principal mostrada tras iniciar sesión.
- *
- * Lista los cuadernos del usuario actual y permite:
- *  - Crear uno nuevo (botón flotante + diálogo).
- *  - Renombrar uno existente (menú contextual + diálogo).
- *  - Eliminar uno (menú contextual + diálogo de confirmación).
- *  - Cerrar sesión (acción en la TopAppBar).
- *
- * Recibe el AuthViewModel para gestionar el cierre de sesión y crea
- * internamente su propio NotebookViewModel mediante viewModel(),
- * cumpliendo el requisito MVVM de tener un ViewModel por pantalla.
+ * Lista las listas de tareas del usuario al estilo Microsoft To Do.
+ * Permite crear, renombrar, eliminar listas y cerrar sesión.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
     viewModel: AuthViewModel,
-    notebookViewModel: NotebookViewModel = viewModel()
+    taskListViewModel: TaskListViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val userName = sessionManager.getUserName() ?: stringResource(R.string.default_user)
 
-    val uiState by notebookViewModel.uiState.collectAsState()
+    val uiState by taskListViewModel.uiState.collectAsState()
 
     var showCreateDialog by remember { mutableStateOf(false) }
-    var notebookToRename by remember { mutableStateOf<Notebook?>(null) }
-    var notebookToDelete by remember { mutableStateOf<Notebook?>(null) }
+    var taskListToRename by remember { mutableStateOf<TaskList?>(null) }
+    var taskListToDelete by remember { mutableStateOf<TaskList?>(null) }
 
     Scaffold(
         topBar = {
@@ -105,12 +77,11 @@ fun HomeScreen(
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-
             when {
-                uiState.isLoading && uiState.notebooks.isEmpty() -> {
+                uiState.isLoading && uiState.taskLists.isEmpty() -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-                uiState.notebooks.isEmpty() -> {
+                uiState.taskLists.isEmpty() -> {
                     Text(
                         text = stringResource(R.string.no_notebooks),
                         modifier = Modifier.align(Alignment.Center),
@@ -119,14 +90,14 @@ fun HomeScreen(
                 }
                 else -> {
                     LazyColumn {
-                        items(uiState.notebooks, key = { it.id ?: it.title }) { notebook ->
-                            NotebookCard(
-                                notebook = notebook,
+                        items(uiState.taskLists, key = { it.id ?: it.title }) { taskList ->
+                            TaskListCard(
+                                taskList = taskList,
                                 onClick = {
-                                    navController.navigate("tasks/${notebook.id}/${notebook.title}")
+                                    navController.navigate("tasks/${taskList.id}/${taskList.title}")
                                 },
-                                onRename = { notebookToRename = notebook },
-                                onDelete = { notebookToDelete = notebook }
+                                onRename = { taskListToRename = taskList },
+                                onDelete = { taskListToDelete = taskList }
                             )
                         }
                     }
@@ -146,44 +117,44 @@ fun HomeScreen(
     }
 
     if (showCreateDialog) {
-        NotebookTitleDialog(
+        TaskListDialog(
             titleText = stringResource(R.string.create_notebook),
             initialValue = "",
             onConfirm = { title ->
-                notebookViewModel.createNotebook(title)
+                taskListViewModel.createTaskList(title)
                 showCreateDialog = false
             },
             onDismiss = { showCreateDialog = false }
         )
     }
 
-    notebookToRename?.let { notebook ->
-        NotebookTitleDialog(
+    taskListToRename?.let { taskList ->
+        TaskListDialog(
             titleText = stringResource(R.string.rename_notebook),
-            initialValue = notebook.title,
+            initialValue = taskList.title,
             onConfirm = { newTitle ->
-                notebook.id?.let { notebookViewModel.renameNotebook(it, newTitle) }
-                notebookToRename = null
+                taskList.id?.let { taskListViewModel.renameTaskList(it, newTitle) }
+                taskListToRename = null
             },
-            onDismiss = { notebookToRename = null }
+            onDismiss = { taskListToRename = null }
         )
     }
 
-    notebookToDelete?.let { notebook ->
+    taskListToDelete?.let { taskList ->
         AlertDialog(
-            onDismissRequest = { notebookToDelete = null },
+            onDismissRequest = { taskListToDelete = null },
             title = { Text(stringResource(R.string.delete_notebook)) },
-            text = { Text(stringResource(R.string.delete_notebook_confirm, notebook.title)) },
+            text = { Text(stringResource(R.string.delete_notebook_confirm, taskList.title)) },
             confirmButton = {
                 TextButton(onClick = {
-                    notebook.id?.let { notebookViewModel.deleteNotebook(it) }
-                    notebookToDelete = null
+                    taskList.id?.let { taskListViewModel.deleteTaskList(it) }
+                    taskListToDelete = null
                 }) {
                     Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { notebookToDelete = null }) {
+                TextButton(onClick = { taskListToDelete = null }) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -192,14 +163,10 @@ fun HomeScreen(
 }
 
 /*
- * Diálogo reutilizado para crear y renombrar un cuaderno.
- *
- * Se mantiene en este archivo por simplicidad (es muy específico de la
- * pantalla de cuadernos). Reutiliza los componentes AppTextField y
- * PrimaryButton del paquete ui.components.
+ * Diálogo para crear y renombrar una lista de tareas.
  */
 @Composable
-private fun NotebookTitleDialog(
+private fun TaskListDialog(
     titleText: String,
     initialValue: String,
     onConfirm: (String) -> Unit,

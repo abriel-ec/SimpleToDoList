@@ -1,40 +1,26 @@
 package com.example.simpletodolist.data.remote
 
-import com.example.simpletodolist.data.model.Notebook
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.POST
-import retrofit2.http.Path
+import com.example.simpletodolist.data.model.TaskList
+import retrofit2.http.*
 
 /*
- * Interfaz Retrofit para la entidad Notebook.
- *
- * Cubre el CRUD completo contra el endpoint /notebooks de JSON Server:
- *  - getAllNotebooks(): obtiene todos los cuadernos del servidor. El
- *    filtrado por usuario se realiza en la capa Repository, ya que las
- *    versiones beta de JSON Server v1 no aplican correctamente los
- *    filtros por query param.
- *  - createNotebook(): crea un cuaderno nuevo.
- *  - updateNotebook(): renombra un cuaderno (PATCH solo modifica los
- *    campos enviados, en lugar de reemplazar el recurso entero).
- *  - deleteNotebook(): elimina un cuaderno por su id.
+ * Interfaz Retrofit para las listas de tareas.
+ * Opera contra el endpoint /lists de JSON Server.
  */
-interface NotebookApi {
+interface TaskListApi {
 
-    @GET("notebooks")
-    suspend fun getAllNotebooks(): List<Notebook>
+    @GET("lists")
+    suspend fun getAllTaskLists(): List<TaskList>
 
-    @POST("notebooks")
-    suspend fun createNotebook(@Body notebook: Notebook): Notebook
+    @POST("lists")
+    suspend fun createTaskList(@Body taskList: TaskList): TaskList
 
-    @PATCH("notebooks/{id}")
-    suspend fun updateNotebook(
+    @PATCH("lists/{id}")
+    suspend fun updateTaskList(
         @Path("id") id: String,
         @Body fields: Map<String, String>
-    ): Notebook
+    ): TaskList
 
-    @DELETE("notebooks/{id}")
-    suspend fun deleteNotebook(@Path("id") id: String)
+    @DELETE("lists/{id}")
+    suspend fun deleteTaskList(@Path("id") id: String)
 }
