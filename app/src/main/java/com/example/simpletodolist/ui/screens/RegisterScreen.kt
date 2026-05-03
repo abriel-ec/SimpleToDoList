@@ -1,31 +1,23 @@
 package com.example.simpletodolist.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.simpletodolist.R
 import com.example.simpletodolist.ui.components.AppTextField
@@ -33,23 +25,15 @@ import com.example.simpletodolist.ui.components.PrimaryButton
 import com.example.simpletodolist.viewmodel.AuthViewModel
 
 /*
- * Pantalla de registro de nuevos usuarios.
- *
- * Recoge nombre, correo y contraseña, valida localmente que los campos
- * no estén vacíos y delega al AuthViewModel la creación del usuario en
- * el backend.
- *
- * Tras un registro exitoso el usuario queda automáticamente logueado
- * (el repositorio guarda la sesión) y se navega a la pantalla Home.
+ * Pantalla de registro rediseñada con estilo profesional.
+ * Mantiene consistencia visual con LoginScreen.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
     navController: NavController,
     viewModel: AuthViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -62,82 +46,142 @@ fun RegisterScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.register_title)) },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        viewModel.resetState()
-                        navController.popBackStack()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.primary,
+                        MaterialTheme.colorScheme.primaryContainer
+                    )
+                )
             )
-        }
-    ) { padding ->
-
+    ) {
         Column(
             modifier = Modifier
-                .padding(padding)
-                .padding(24.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            Spacer(modifier = Modifier.height(48.dp))
+
+            // Logo / ícono
+            Surface(
+                shape = RoundedCornerShape(24.dp),
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f),
+                modifier = Modifier.size(80.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        text = "✓",
+                        fontSize = 40.sp,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "SimpleToDoList",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
 
             Text(
                 text = stringResource(R.string.register_welcome),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
+                textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-            AppTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = stringResource(R.string.name_label)
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            AppTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = stringResource(R.string.email_label),
-                keyboardType = KeyboardType.Email
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            AppTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = stringResource(R.string.password_label),
-                isPassword = true
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            PrimaryButton(
-                text = stringResource(R.string.register_button),
-                onClick = { viewModel.register(name, email, password) },
-                isLoading = uiState.isLoading,
-                enabled = name.isNotBlank() &&
-                        email.isNotBlank() &&
-                        password.length >= 4
-            )
-
-            uiState.errorMessage?.let { message ->
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = message,
-                    color = MaterialTheme.colorScheme.error
+            // Tarjeta del formulario
+            Card(
+                shape = RoundedCornerShape(24.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
                 )
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.register_title),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    AppTextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = stringResource(R.string.name_label)
+                    )
+
+                    AppTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = stringResource(R.string.email_label),
+                        keyboardType = KeyboardType.Email
+                    )
+
+                    AppTextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        label = stringResource(R.string.password_label),
+                        isPassword = true
+                    )
+
+                    uiState.errorMessage?.let { message ->
+                        Text(
+                            text = message,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+
+                    PrimaryButton(
+                        text = stringResource(R.string.register_button),
+                        onClick = { viewModel.register(name, email, password) },
+                        isLoading = uiState.isLoading,
+                        enabled = name.isNotBlank() &&
+                                email.isNotBlank() &&
+                                password.length >= 4
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "¿Ya tienes cuenta?",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        TextButton(onClick = {
+                            viewModel.resetState()
+                            navController.popBackStack()
+                        }) {
+                            Text(
+                                text = "Inicia sesión",
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
             }
+
+            Spacer(modifier = Modifier.height(48.dp))
         }
     }
 }

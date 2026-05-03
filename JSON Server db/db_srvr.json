@@ -60,7 +60,7 @@
     },
     {
       "dueDate": "",
-      "isCompleted": false,
+      "isCompleted": true,
       "isImportant": false,
       "listId": "_N9bwZUO6Tk",
       "notes": "",
@@ -69,7 +69,7 @@
     },
     {
       "dueDate": "",
-      "isCompleted": false,
+      "isCompleted": true,
       "isImportant": true,
       "listId": "fbDEihpRZTU",
       "notes": "",
