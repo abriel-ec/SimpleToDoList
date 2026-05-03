@@ -7,18 +7,12 @@
       "password": "1234"
     }
   ],
-  "notebooks": [
+  "lists": [
     {
       "color": "#6650A4",
-      "title": "aea",
+      "title": "aeaa",
       "userId": "1",
-      "id": "fbDEihpRZTU"
-    },
-    {
-      "color": "#6650A4",
-      "title": "pendiente",
-      "userId": "1",
-      "id": "_N9bwZUO6Tk"
+      "id": "L3tcaVCVZ7w"
     }
   ],
   "tasks": [
@@ -26,55 +20,19 @@
       "dueDate": "",
       "isCompleted": true,
       "isImportant": false,
-      "listId": "fbDEihpRZTU",
+      "listId": "L3tcaVCVZ7w",
       "notes": "",
-      "title": "com.example.simpletodolist.ui.screens.RegisterScreen",
-      "id": "_Zc624SwvMw"
+      "title": "sadada",
+      "id": "rf3SBbx6wKk"
     },
     {
       "dueDate": "",
       "isCompleted": false,
       "isImportant": false,
-      "listId": "_N9bwZUO6Tk",
+      "listId": "L3tcaVCVZ7w",
       "notes": "",
-      "title": "sadsadg",
-      "id": "3kd3ZE8vHLs"
-    },
-    {
-      "dueDate": "",
-      "isCompleted": false,
-      "isImportant": false,
-      "listId": "_N9bwZUO6Tk",
-      "notes": "",
-      "title": "asdasdadada",
-      "id": "qK_ufnZgFLw"
-    },
-    {
-      "dueDate": "",
-      "isCompleted": false,
-      "isImportant": false,
-      "listId": "_N9bwZUO6Tk",
-      "notes": "",
-      "title": "asdadasd",
-      "id": "jJbADagwEAk"
-    },
-    {
-      "dueDate": "",
-      "isCompleted": true,
-      "isImportant": false,
-      "listId": "_N9bwZUO6Tk",
-      "notes": "",
-      "title": "aSASsAS",
-      "id": "cfRAf_0Y9_Y"
-    },
-    {
-      "dueDate": "",
-      "isCompleted": true,
-      "isImportant": true,
-      "listId": "fbDEihpRZTU",
-      "notes": "",
-      "title": "ASasS",
-      "id": "HjHwpkWWN0Q"
+      "title": "asdadad",
+      "id": "H41rKCd0aHU"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

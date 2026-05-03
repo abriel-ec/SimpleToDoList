@@ -1,53 +1,47 @@
 package com.example.simpletodolist.data.repository
 
-import com.example.simpletodolist.data.model.Notebook
+import com.example.simpletodolist.data.model.TaskList
 import com.example.simpletodolist.data.remote.RetrofitClient
 
 /*
- * Repositorio responsable de las operaciones sobre cuadernos.
- *
+ * Repositorio responsable de las operaciones sobre listas de tareas.
  * Aísla al ViewModel de los detalles de Retrofit y facilita el manejo
- * uniforme de errores devolviendo Result<T>. Si en el futuro añadimos
- * caché local con Room, todo el cambio quedará confinado a esta clase.
+ * uniforme de errores devolviendo Result<T>.
  */
-class NotebookRepository {
+class TaskListRepository {
 
-    private val notebookApi = RetrofitClient.notebookApi
+    private val api = RetrofitClient.taskListApi
 
-    suspend fun getNotebooks(userId: String): Result<List<Notebook>> {
+    suspend fun getTaskLists(userId: String): Result<List<TaskList>> {
         return try {
-            // El filtrado se hace en el cliente porque JSON Server v1 beta
-            // no aplica correctamente el query param ?userId=...
-            val notebooks = notebookApi.getAllNotebooks()
+            val taskLists = api.getAllTaskLists()
                 .filter { it.userId == userId }
-            Result.success(notebooks)
+            Result.success(taskLists)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun createNotebook(userId: String, title: String): Result<Notebook> {
+    suspend fun createTaskList(userId: String, title: String): Result<TaskList> {
         return try {
-            val newNotebook = Notebook(userId = userId, title = title)
-            val created = notebookApi.createNotebook(newNotebook)
-            Result.success(created)
+            val newTaskList = TaskList(userId = userId, title = title)
+            Result.success(api.createTaskList(newTaskList))
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun renameNotebook(id: String, newTitle: String): Result<Notebook> {
+    suspend fun renameTaskList(id: String, newTitle: String): Result<TaskList> {
         return try {
-            val updated = notebookApi.updateNotebook(id, mapOf("title" to newTitle))
-            Result.success(updated)
+            Result.success(api.updateTaskList(id, mapOf("title" to newTitle)))
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun deleteNotebook(id: String): Result<Unit> {
+    suspend fun deleteTaskList(id: String): Result<Unit> {
         return try {
-            notebookApi.deleteNotebook(id)
+            api.deleteTaskList(id)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
