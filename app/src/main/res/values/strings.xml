@@ -36,4 +36,28 @@
     <string name="cancel">Cancelar</string>
     <string name="rename">Renombrar</string>
     <string name="delete">Eliminar</string>
+
+    <!-- Secciones -->
+    <string name="create_section">Crear sección</string>
+    <string name="rename_section">Renombrar sección</string>
+    <string name="delete_section">Eliminar sección</string>
+    <string name="delete_section_confirm">¿Eliminar la sección \"%1$s\"?</string>
+    <string name="no_sections">Aún no hay secciones. ¡Crea la primera!</string>
+    <string name="section_title_label">Nombre de la sección</string>
+    <string name="pick_color">Elige un color</string>
+
+    <!-- Páginas -->
+    <string name="create_page">Crear página</string>
+    <string name="delete_page">Eliminar página</string>
+    <string name="delete_page_confirm">¿Eliminar la página \"%1$s\"?</string>
+    <string name="no_pages">Aún no hay páginas. ¡Crea la primera!</string>
+    <string name="page_title_label">Título de la página</string>
+    <string name="page_title_placeholder">Sin título</string>
+    <string name="page_content_placeholder">Empieza a escribir aquí…</string>
+    <string name="last_modified">Última modificación: %1$s</string>
+    <string name="no_page_selected">No hay página seleccionada</string>
+
+    <!-- Editor -->
+    <string name="editor_title">Editor</string>
+    <string name="saving">Guardando…</string>
 </resources>

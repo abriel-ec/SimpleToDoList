@@ -4,17 +4,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /*
- * Cliente HTTP centralizado de la aplicación.
- *
- * Construye una única instancia de Retrofit y expone las distintas APIs
- * (UserApi, y en el futuro NotebookApi, SectionApi, PageApi).
- *
- * BASE_URL apunta a 10.0.2.2:3000 porque esa es la dirección que usa el
- * emulador de Android para acceder al "localhost" de la máquina donde
- * corre JSON Server.
- *
- * Se utiliza "by lazy" para que la creación se realice solo cuando se
- * necesita por primera vez.
+ * Singleton que provee las instancias de Retrofit para cada API.
+ * La dirección 10.0.2.2 permite al emulador acceder al localhost del PC.
  */
 object RetrofitClient {
 
@@ -27,6 +18,19 @@ object RetrofitClient {
             .build()
     }
 
-    val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
-    val notebookApi: NotebookApi by lazy { retrofit.create(NotebookApi::class.java) }
+    val userApi: UserApi by lazy {
+        retrofit.create(UserApi::class.java)
+    }
+
+    val notebookApi: NotebookApi by lazy {
+        retrofit.create(NotebookApi::class.java)
+    }
+
+    val sectionApi: SectionApi by lazy {
+        retrofit.create(SectionApi::class.java)
+    }
+
+    val pageApi: PageApi by lazy {
+        retrofit.create(PageApi::class.java)
+    }
 }

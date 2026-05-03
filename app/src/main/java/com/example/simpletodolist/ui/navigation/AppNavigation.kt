@@ -10,24 +10,26 @@ import androidx.navigation.compose.rememberNavController
 import com.example.simpletodolist.data.local.SessionManager
 import com.example.simpletodolist.ui.screens.HomeScreen
 import com.example.simpletodolist.ui.screens.LoginScreen
+import com.example.simpletodolist.ui.screens.PageEditorScreen
+import com.example.simpletodolist.ui.screens.PageListScreen
 import com.example.simpletodolist.ui.screens.RegisterScreen
+import com.example.simpletodolist.ui.screens.SectionScreen
 import com.example.simpletodolist.viewmodel.AuthViewModel
+import com.example.simpletodolist.viewmodel.PageViewModel
 
 /*
  * Configuración central de navegación de la aplicación.
  *
- * Define las rutas disponibles y la pantalla inicial:
- *  - "login":    pantalla de inicio de sesión.
- *  - "register": pantalla de registro de nuevos usuarios.
- *  - "home":     pantalla principal una vez autenticado.
+ * Rutas disponibles:
+ *  - "login":                        pantalla de inicio de sesión
+ *  - "register":                     pantalla de registro
+ *  - "home":                         lista de cuadernos
+ *  - "sections/{notebookId}/{title}": secciones de un cuaderno
+ *  - "pages/{sectionId}/{title}":    páginas de una sección
+ *  - "editor/{pageId}":              editor de una página
  *
- * La pantalla de inicio (startDestination) depende de si existe sesión
- * activa en SessionManager: si la hay, el usuario va directo a "home";
- * en caso contrario, debe iniciar sesión.
- *
- * El AuthViewModel se obtiene una sola vez y se comparte entre
- * LoginScreen y RegisterScreen para que ambas pantallas observen el
- * mismo estado de autenticación.
+ * PageViewModel se comparte entre PageListScreen y PageEditorScreen
+ * para mantener la página seleccionada en memoria.
  */
 @Composable
 fun AppNavigation() {
@@ -35,6 +37,7 @@ fun AppNavigation() {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val authViewModel: AuthViewModel = viewModel()
+    val pageViewModel: PageViewModel = viewModel()
 
     val startDestination = if (sessionManager.isLoggedIn()) "home" else "login"
 
@@ -53,6 +56,34 @@ fun AppNavigation() {
 
         composable("home") {
             HomeScreen(navController = navController, viewModel = authViewModel)
+        }
+
+        composable("sections/{notebookId}/{title}") { backStackEntry ->
+            val notebookId = backStackEntry.arguments?.getString("notebookId") ?: ""
+            val title = backStackEntry.arguments?.getString("title") ?: ""
+            SectionScreen(
+                navController = navController,
+                notebookId = notebookId,
+                notebookTitle = title
+            )
+        }
+
+        composable("pages/{sectionId}/{title}") { backStackEntry ->
+            val sectionId = backStackEntry.arguments?.getString("sectionId") ?: ""
+            val title = backStackEntry.arguments?.getString("title") ?: ""
+            PageListScreen(
+                navController = navController,
+                sectionId = sectionId,
+                sectionTitle = title,
+                viewModel = pageViewModel
+            )
+        }
+
+        composable("editor/{pageId}") {
+            PageEditorScreen(
+                navController = navController,
+                viewModel = pageViewModel
+            )
         }
     }
 }
