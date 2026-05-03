@@ -26,5 +26,5 @@ interface TaskApi {
     suspend fun addTask(@Body task: Task): Task
 
     @DELETE("tasks/{id}")
-    suspend fun deleteTask(@Path("id") id: Int)
+    suspend fun deleteTask(@Path("id") id: String)
 }

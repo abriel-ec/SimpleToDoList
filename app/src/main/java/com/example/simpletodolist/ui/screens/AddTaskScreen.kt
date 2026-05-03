@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -17,36 +16,32 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.simpletodolist.data.model.Task
+import com.example.simpletodolist.R
 import com.example.simpletodolist.ui.components.TaskInputField
-import com.example.simpletodolist.viewmodel.TaskViewModel
+import com.example.simpletodolist.viewmodel.AddTaskViewModel
 
 /*
 Esta pantalla permite al usuario crear una nueva tarea.
-
 Utiliza Jetpack Compose junto con el patrón MVVM, donde:
 - La UI maneja únicamente la entrada de datos.
 - El ViewModel se encarga de la lógica de negocio y del envío de la tarea al backend.
-
-Se utilizan estados locales (title y description) mediante remember y mutableStateOf
-para almacenar temporalmente la información ingresada por el usuario antes de guardarla.
 */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskScreen(
-
     navController: NavController,
-    viewModel: TaskViewModel
+    viewModel: AddTaskViewModel = viewModel()
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Nueva tarea") }) }
+        topBar = { TopAppBar(title = { Text(stringResource(R.string.add_task_title)) }) }
     ) { padding ->
 
         Column(
@@ -54,11 +49,10 @@ fun AddTaskScreen(
                 .padding(padding)
                 .padding(16.dp)
         ) {
-
             TaskInputField(
                 value = title,
                 onValueChange = { title = it },
-                label = "Título"
+                label = stringResource(R.string.label_title)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -66,20 +60,22 @@ fun AddTaskScreen(
             TaskInputField(
                 value = description,
                 onValueChange = { description = it },
-                label = "Descripción",
+                label = stringResource(R.string.label_description),
                 singleLine = false
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+
             Button(
                 onClick = {
-                    viewModel.addTask(title, description)
-                    navController.popBackStack()
-                }
+                    viewModel.addTask(title, description) {
+                        navController.popBackStack()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Guardar")
+                Text(stringResource(R.string.btn_save))
             }
-
         }
     }
 }

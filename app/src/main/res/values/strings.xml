@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">SimpleToDoList</string>
+    <string name="home_title">Mis tareas</string>
+    <string name="add_task_title">Nueva tarea</string>
+    <string name="detail_title">Detalle</string>
+    <string name="btn_add_task">Agregar tarea</string>
+    <string name="btn_save">Guardar</string>
+    <string name="label_title">Título</string>
+    <string name="label_description">Descripción</string>
+    <string name="back_button">Volver</string>
+    <string name="empty_tasks">No hay tareas aún</string>
+    <string name="app_logo_desc">Logo de la aplicación</string>
 </resources>
