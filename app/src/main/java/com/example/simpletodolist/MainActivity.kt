@@ -4,50 +4,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.simpletodolist.ui.navigation.AppNavigation
 import com.example.simpletodolist.ui.theme.SimpleToDoListTheme
 
 /*
-Actividad principal de la aplicación.
-
-Es el punto de entrada del sistema Android y se encarga de inicializar Jetpack Compose.
-Dentro de setContent se define el tema global de la aplicación y se carga AppNavigation(),
-que gestiona todas las pantallas y el flujo de navegación de la app bajo la arquitectura MVVM.
-*/
-
+ * Actividad principal y único punto de entrada de la aplicación.
+ *
+ * Se encarga de inicializar Jetpack Compose mediante setContent,
+ * aplicar el tema global (SimpleToDoListTheme) y delegar todo el
+ * flujo de pantallas a AppNavigation, que gestiona la navegación
+ * según la arquitectura MVVM.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             SimpleToDoListTheme {
                 AppNavigation()
-
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SimpleToDoListTheme {
-        Greeting("Android")
     }
 }
