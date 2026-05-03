@@ -9,17 +9,27 @@
   ],
   "notebooks": [
     {
-      "title": "one",
+      "title": "aeaa",
       "userId": "1",
-      "id": "qJTWh-3h4Ug"
-    },
-    {
-      "title": "two",
-      "userId": "1",
-      "id": "efolF3Bfo8Y"
+      "id": "2pxK2xuHFmg"
     }
   ],
-  "sections": [],
-  "pages": [],
+  "sections": [
+    {
+      "color": "#E53935",
+      "notebookId": "2pxK2xuHFmg",
+      "title": "xdd",
+      "id": "TDdtl0ULAO4"
+    }
+  ],
+  "pages": [
+    {
+      "content": "asdasdadada",
+      "lastModified": "03/05/2026 03:32",
+      "sectionId": "TDdtl0ULAO4",
+      "title": "aeaa1",
+      "id": "MxPIimy73WY"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
