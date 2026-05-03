@@ -10,26 +10,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.simpletodolist.data.local.SessionManager
 import com.example.simpletodolist.ui.screens.HomeScreen
 import com.example.simpletodolist.ui.screens.LoginScreen
-import com.example.simpletodolist.ui.screens.PageEditorScreen
-import com.example.simpletodolist.ui.screens.PageListScreen
 import com.example.simpletodolist.ui.screens.RegisterScreen
-import com.example.simpletodolist.ui.screens.SectionScreen
+import com.example.simpletodolist.ui.screens.TaskScreen
 import com.example.simpletodolist.viewmodel.AuthViewModel
-import com.example.simpletodolist.viewmodel.PageViewModel
 
 /*
  * Configuración central de navegación de la aplicación.
  *
  * Rutas disponibles:
- *  - "login":                        pantalla de inicio de sesión
- *  - "register":                     pantalla de registro
- *  - "home":                         lista de cuadernos
- *  - "sections/{notebookId}/{title}": secciones de un cuaderno
- *  - "pages/{sectionId}/{title}":    páginas de una sección
- *  - "editor/{pageId}":              editor de una página
- *
- * PageViewModel se comparte entre PageListScreen y PageEditorScreen
- * para mantener la página seleccionada en memoria.
+ *  - "login":                  pantalla de inicio de sesión
+ *  - "register":               pantalla de registro
+ *  - "home":                   lista de listas/cuadernos
+ *  - "tasks/{listId}/{title}": tareas de una lista
  */
 @Composable
 fun AppNavigation() {
@@ -37,7 +29,6 @@ fun AppNavigation() {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val authViewModel: AuthViewModel = viewModel()
-    val pageViewModel: PageViewModel = viewModel()
 
     val startDestination = if (sessionManager.isLoggedIn()) "home" else "login"
 
@@ -58,31 +49,14 @@ fun AppNavigation() {
             HomeScreen(navController = navController, viewModel = authViewModel)
         }
 
-        composable("sections/{notebookId}/{title}") { backStackEntry ->
-            val notebookId = backStackEntry.arguments?.getString("notebookId") ?: ""
+        composable("tasks/{listId}/{title}") { backStackEntry ->
+            val listId = backStackEntry.arguments?.getString("listId") ?: ""
             val title = backStackEntry.arguments?.getString("title") ?: ""
-            SectionScreen(
+            TaskScreen(
                 navController = navController,
-                notebookId = notebookId,
-                notebookTitle = title
-            )
-        }
-
-        composable("pages/{sectionId}/{title}") { backStackEntry ->
-            val sectionId = backStackEntry.arguments?.getString("sectionId") ?: ""
-            val title = backStackEntry.arguments?.getString("title") ?: ""
-            PageListScreen(
-                navController = navController,
-                sectionId = sectionId,
-                sectionTitle = title,
-                viewModel = pageViewModel
-            )
-        }
-
-        composable("editor/{pageId}") {
-            PageEditorScreen(
-                navController = navController,
-                viewModel = pageViewModel
+                listId = listId,
+                listTitle = title,
+                listColor = "#6650A4"
             )
         }
     }
