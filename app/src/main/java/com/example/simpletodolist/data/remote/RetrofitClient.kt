@@ -26,11 +26,7 @@ object RetrofitClient {
         retrofit.create(NotebookApi::class.java)
     }
 
-    val sectionApi: SectionApi by lazy {
-        retrofit.create(SectionApi::class.java)
-    }
-
-    val pageApi: PageApi by lazy {
-        retrofit.create(PageApi::class.java)
+    val taskApi: TaskApi by lazy {
+        retrofit.create(TaskApi::class.java)
     }
 }
