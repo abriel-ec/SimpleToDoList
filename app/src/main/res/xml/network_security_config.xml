@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!--
-Este archivo corresponde a la configuración de seguridad de red (Network Security Config) en Android.
-
-Su función es definir qué conexiones de red están permitidas por la aplicación,
-especialmente en relación al tráfico HTTP no cifrado (cleartext traffic).
--->
-
 <network-security-config>
-
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">10.0.2.2</domain>
     </domain-config>
-
 </network-security-config>

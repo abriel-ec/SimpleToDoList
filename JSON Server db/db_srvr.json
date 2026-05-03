@@ -1,24 +1,34 @@
 {
-  "tasks": [
+  "users": [
     {
       "id": "1",
-      "title": "Tarea ejemplo",
-      "description": "Descripción inicial"
-    },
+      "name": "Demo User",
+      "email": "demo@demo.com",
+      "password": "1234"
+    }
+  ],
+  "notebooks": [
     {
-      "description": "Hola mundo!!!!",
-      "title": "Nueva tarea creada",
-      "id": "_jWm5fxJndg"
-    },
+      "title": "aeaa",
+      "userId": "1",
+      "id": "2pxK2xuHFmg"
+    }
+  ],
+  "sections": [
     {
-      "description": "T2",
-      "title": "Tarea 2",
-      "id": "TFBrljdDzBk"
-    },
+      "color": "#E53935",
+      "notebookId": "2pxK2xuHFmg",
+      "title": "xdd",
+      "id": "TDdtl0ULAO4"
+    }
+  ],
+  "pages": [
     {
-      "description": "T3",
-      "title": "Tarea 3",
-      "id": "4L6Fcj7Lj78"
+      "content": "asdasdadada",
+      "lastModified": "03/05/2026 03:32",
+      "sectionId": "TDdtl0ULAO4",
+      "title": "aeaa1",
+      "id": "MxPIimy73WY"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
