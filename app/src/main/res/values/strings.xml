@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">SimpleToDoList</string>
+
+    <!-- Login -->
+    <string name="login_title">Iniciar sesión</string>
+    <string name="login_welcome">¡Bienvenido de nuevo!</string>
+    <string name="login_button">Entrar</string>
+    <string name="go_to_register">¿No tienes cuenta? Regístrate</string>
+
+    <!-- Register -->
+    <string name="register_title">Crear cuenta</string>
+    <string name="register_welcome">Crea tu cuenta para empezar</string>
+    <string name="register_button">Registrarse</string>
+
+    <!-- Campos -->
+    <string name="name_label">Nombre</string>
+    <string name="email_label">Correo electrónico</string>
+    <string name="password_label">Contraseña</string>
+
+    <!-- Home / Cuadernos -->
+    <string name="home_title">Inicio</string>
+    <string name="welcome_user">Hola, %1$s</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="default_user">usuario</string>
+    <string name="no_notebooks">Aún no tienes cuadernos. ¡Crea el primero!</string>
+    <string name="create_notebook">Crear cuaderno</string>
+    <string name="rename_notebook">Renombrar cuaderno</string>
+    <string name="delete_notebook">Eliminar cuaderno</string>
+    <string name="delete_notebook_confirm">¿Seguro que quieres eliminar \"%1$s\"?</string>
+    <string name="notebook_title_label">Título del cuaderno</string>
+    <string name="notebook_options">Opciones del cuaderno</string>
+
+    <!-- Comunes -->
+    <string name="back">Volver</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="rename">Renombrar</string>
+    <string name="delete">Eliminar</string>
 </resources>
