@@ -123,7 +123,7 @@ fun HomeScreen(
                             NotebookCard(
                                 notebook = notebook,
                                 onClick = {
-                                    navController.navigate("sections/${notebook.id}/${notebook.title}")
+                                    navController.navigate("tasks/${notebook.id}/${notebook.title}")
                                 },
                                 onRename = { notebookToRename = notebook },
                                 onDelete = { notebookToDelete = notebook }

@@ -1,44 +1,27 @@
 package com.example.simpletodolist.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.simpletodolist.R
 import com.example.simpletodolist.data.model.Notebook
 
 /*
- * Componente reutilizable que representa un cuaderno como tarjeta.
- *
- * Recibe el cuaderno y tres callbacks:
- *  - onClick: navegación al contenido del cuaderno (secciones).
- *  - onRename / onDelete: acciones disponibles desde el menú contextual.
- *
- * El menú contextual (DropdownMenu) se gestiona con un estado local
- * (expanded), ya que solo concierne a esta tarjeta y no debe vivir en
- * el ViewModel.
- *
- * Cumple el requisito de componentes reutilizables al estar pensado
- * para usarse dentro de cualquier lista de cuadernos.
+ * Componente reutilizable que representa una lista como tarjeta
+ * al estilo Microsoft To Do con color distintivo.
  */
 @Composable
 fun NotebookCard(
@@ -50,48 +33,68 @@ fun NotebookCard(
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
+    val cardColor = runCatching {
+        Color(android.graphics.Color.parseColor(notebook.color ?: "#6650A4"))
+    }.getOrDefault(MaterialTheme.colorScheme.primary)
+
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp)
-            .clickable { onClick() }
+            .padding(vertical = 4.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-
-            Text(
-                text = notebook.title,
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            IconButton(onClick = { menuExpanded = true }) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = stringResource(R.string.notebook_options)
+            // Círculo de color
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(cardColor.copy(alpha = 0.15f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clip(CircleShape)
+                        .background(cardColor)
                 )
+            }
 
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = notebook.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            Box {
+                IconButton(onClick = { menuExpanded = true }) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = stringResource(R.string.notebook_options)
+                    )
+                }
                 DropdownMenu(
                     expanded = menuExpanded,
                     onDismissRequest = { menuExpanded = false }
                 ) {
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.rename)) },
-                        onClick = {
-                            menuExpanded = false
-                            onRename()
-                        }
+                        onClick = { menuExpanded = false; onRename() }
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.delete)) },
-                        onClick = {
-                            menuExpanded = false
-                            onDelete()
-                        }
+                        onClick = { menuExpanded = false; onDelete() }
                     )
                 }
             }

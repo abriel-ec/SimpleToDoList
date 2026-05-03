@@ -9,26 +9,72 @@
   ],
   "notebooks": [
     {
-      "title": "aeaa",
+      "color": "#6650A4",
+      "title": "aea",
       "userId": "1",
-      "id": "2pxK2xuHFmg"
+      "id": "fbDEihpRZTU"
+    },
+    {
+      "color": "#6650A4",
+      "title": "pendiente",
+      "userId": "1",
+      "id": "_N9bwZUO6Tk"
     }
   ],
-  "sections": [
+  "tasks": [
     {
-      "color": "#E53935",
-      "notebookId": "2pxK2xuHFmg",
-      "title": "xdd",
-      "id": "TDdtl0ULAO4"
-    }
-  ],
-  "pages": [
+      "dueDate": "",
+      "isCompleted": true,
+      "isImportant": false,
+      "listId": "fbDEihpRZTU",
+      "notes": "",
+      "title": "com.example.simpletodolist.ui.screens.RegisterScreen",
+      "id": "_Zc624SwvMw"
+    },
     {
-      "content": "asdasdadada",
-      "lastModified": "03/05/2026 03:32",
-      "sectionId": "TDdtl0ULAO4",
-      "title": "aeaa1",
-      "id": "MxPIimy73WY"
+      "dueDate": "",
+      "isCompleted": false,
+      "isImportant": false,
+      "listId": "_N9bwZUO6Tk",
+      "notes": "",
+      "title": "sadsadg",
+      "id": "3kd3ZE8vHLs"
+    },
+    {
+      "dueDate": "",
+      "isCompleted": false,
+      "isImportant": false,
+      "listId": "_N9bwZUO6Tk",
+      "notes": "",
+      "title": "asdasdadada",
+      "id": "qK_ufnZgFLw"
+    },
+    {
+      "dueDate": "",
+      "isCompleted": false,
+      "isImportant": false,
+      "listId": "_N9bwZUO6Tk",
+      "notes": "",
+      "title": "asdadasd",
+      "id": "jJbADagwEAk"
+    },
+    {
+      "dueDate": "",
+      "isCompleted": false,
+      "isImportant": false,
+      "listId": "_N9bwZUO6Tk",
+      "notes": "",
+      "title": "aSASsAS",
+      "id": "cfRAf_0Y9_Y"
+    },
+    {
+      "dueDate": "",
+      "isCompleted": false,
+      "isImportant": true,
+      "listId": "fbDEihpRZTU",
+      "notes": "",
+      "title": "ASasS",
+      "id": "HjHwpkWWN0Q"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
